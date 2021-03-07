@@ -1,0 +1,8 @@
+﻿  path.c
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\readData.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(137,67): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(133,9): warning C4101: “a”: 未引用的局部变量
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(162,1): warning C4029: 声明的形参表不同于定义
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(197,35): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(126): warning C4715: “time_crowded”: 不是所有的控件路径都返回值
+  WindowsProject1.vcxproj -> C:\Users\12524\source\repos\WindowsProject1\Debug\WindowsProject1.exe
