@@ -524,7 +524,7 @@ INT_PTR CALLBACK Dialog(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						EditControlLimit(hWnd, LOWORD(wParam), (char*)"0123456789", 0);
 						GetWindowText(GetDlgItem(hWnd, wmId), tempstr, 3);
 						if (strlen(tempstr)) {
-							int line = SendMessage(hControl->hComBox[3 + nowSelect * 2], CB_GETCURSEL, 0, 0);
+							int line = (int)SendMessage(hControl->hComBox[3 + nowSelect * 2], CB_GETCURSEL, 0, 0);
 							int sta=atoi(tempstr);
 							if(sta<=G->lineDetail[line].lineCount)
 								strcpy_s(tempstr, 20, G->lineDetail[line].lineStations[sta]);

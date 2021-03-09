@@ -1,0 +1,24 @@
+﻿  graph.c
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\readData.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  path.c
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\readData.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(138,67): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(134,9): warning C4101: “a”: 未引用的局部变量
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(163,1): warning C4029: 声明的形参表不同于定义
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\path.c(198,35): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  正在生成代码...
+  WindowsProject1.cpp
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\readData.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.h(540,14): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.h(610,14): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.h(644,12): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.h(668,13): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.cpp(511,13): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.cpp(515,16): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.cpp(538,34): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.cpp(574,17): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.cpp(597,14): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.cpp(627,77): warning C4244: “=”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.cpp(742,14): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+C:\Users\12524\source\repos\WindowsProject1\WindowsProject1\WindowsProject1.cpp(1014,14): warning C4244: “初始化”: 从“LRESULT”转换到“int”，可能丢失数据
+  WindowsProject1.vcxproj -> C:\Users\12524\source\repos\WindowsProject1\x64\Debug\WindowsProject1.exe
