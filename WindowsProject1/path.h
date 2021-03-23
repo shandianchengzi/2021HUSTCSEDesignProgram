@@ -36,11 +36,12 @@ extern "C" {
 	int Path_Sort_Time(PathInfo* P[], int c);
 	int Path_Sort_Money(PathInfo* P[], int c);
 	int Path_Sort_Crowded(PathInfo* P[], int c);
-	/*连通图的简单路径（类dfs) */
+	/* 函数功能：求解连通图的简单路径（类dfs) */
+	/* 入口参数：连通图G，路径数组P，起点站编号i，终点站编号j，出发时间time，最大换乘次数c，最大拥挤程度cm */
+	/* 出口参数：找到的路的数量 */
 	int get_All(GraphAdjList* G, PathInfo* P[], int i, int j, Time_2 time, int c, int cm);
 	void time_add(Time_2* time, float add);
 
-	Status Cal_TimeAll(GraphAdjList* G, PathInfo* P, Time_2 time);
 #ifdef __cplusplus
 }
 #endif

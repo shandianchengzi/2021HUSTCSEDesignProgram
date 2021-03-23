@@ -33,11 +33,13 @@ extern "C" {
 	/* 基本函数定义 */
 	/* 初始化定义图指针 */
 	GraphAdjList* Init_Graph();
-	/* 定位结点，返回结点序号;若无该结点，返回-1 */
+	/* 函数功能：定位结点，返回结点序号;若无该结点，返回-1 */
 	int LocateVex(GraphAdjList* G, VertexType Vex);
 	/* 定位边，返回边指针;若无该边，返回0 */
 	EdgeNode* LocateEdge(GraphAdjList* G, int ivex, int jvex);
-	/* 依据hash结点表和线路信息建立图的邻接表结构 */
+	/* 函数功能：依据hash结点表和线路信息建立图的邻接表结构 */
+	/* 入口参数：指向图结构体的指针G，数据文件指针fp */
+	/* 出口参数：函数运行状态。若返回0则运行正常，返回-1则运行异常 */
 	Status CreateALGraph(GraphAdjList* G, FILE* fp);
 	/* 释放建立Graph时分配的内存 */
 	Status Free_Graph(GraphAdjList** G);

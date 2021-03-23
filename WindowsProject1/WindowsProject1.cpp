@@ -615,35 +615,46 @@ INT_PTR CALLBACK Dialog(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case ID_EDITM:
 			switch (HIWORD(wParam))
 			{
+			case CBN_SETFOCUS:
 			case CBN_SELCHANGE:
 			case CBN_EDITCHANGE:
 				if (HIWORD(wParam) == CBN_EDITCHANGE)
 				{
 					EditControlLimit(hWnd, LOWORD(wParam), (char*)"0123456789", 0);
-					time.hour = EditControlLimit(hWnd, ID_EDITH, (char*)"小时", 2);
+					GetWindowText(GetDlgItem(hWnd, ID_EDITH), hTime, 2);
+					time.hour = EditControlRange(hWnd, ID_EDITH, (char*)"小时", 6, 22, 0);
 				}
 				else
 				{
-					time.hour = SendMessage(GetDlgItem(hWnd, ID_EDITH), CB_GETCURSEL, 0, 0)+6;
+					int t=SendMessage(GetDlgItem(hWnd, ID_EDITH), CB_GETCURSEL, 0, 0);
+					if (t != -1)
+						time.hour = t + 6;
 				}
 				if (time.hour != -1)
 				{
 					if (HIWORD(wParam) == CBN_EDITCHANGE)
 					{
-						GetWindowText(hControl->hComBox[2], mTime, 2);
-						time.minute = (float)EditControlLimit(hWnd, ID_EDITM, (char*)"分钟", 3);
+						EditControlLimit(hWnd, LOWORD(wParam), (char*)"0123456789", 0);
+						GetWindowText(GetDlgItem(hWnd, ID_EDITM), mTime, 2);
+						time.minute = (float)EditControlRange(hWnd, ID_EDITM, (char*)"分钟", 0, 59, 0);
 					}
 					else
 					{
-						time.minute = (float)SendMessage(GetDlgItem(hWnd, ID_EDITM), CB_GETCURSEL, 0, 0);
+						int t = SendMessage(GetDlgItem(hWnd, ID_EDITM), CB_GETCURSEL, 0, 0);
+						if (t != -1)
+							time.minute = (float)t;
 					}
 					if (time.minute != -1)
 					{
 						SetWindowText(GetDlgItem(hWnd, ID_TEXTI),"" );
 						tips_table(GetDlgItem(hWnd,ID_TEXTI),time);
 					}
+					else
+						SetWindowText(GetDlgItem(hWnd, ID_TEXTI), "分钟输入异常");
 					return 0;
 				}
+				else
+					SetWindowText(GetDlgItem(hWnd, ID_TEXTI), "小时输入异常");
 				break;
 			}
 			break;
@@ -684,6 +695,8 @@ INT_PTR CALLBACK Dialog(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					ShowResult(GetDlgItem(hControl->hDialog[2], ID_TEXTI2), 1);
 					ShowResult(GetDlgItem(hControl->hDialog[2], ID_TEXTI3), 2);
 					ShowResult(GetDlgItem(hControl->hDialog[2], ID_TEXTI4), 3);
+					for (int j = 0; P[j]; j++)
+						Free_Path(&P[j]);
 				}
 				break;
 			}
@@ -819,8 +832,6 @@ INT_PTR CALLBACK Dialog(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			// 退出对话框并返回数据
 			ShowWindow(hControl->hBtn[1], SW_SHOWNA);
 			EndDialog(hWnd, LOWORD(wParam));
-			for (int j = 0; P[j]; j++)
-				Free_Path(&P[j]);
 		}
 		return 0;
 	}

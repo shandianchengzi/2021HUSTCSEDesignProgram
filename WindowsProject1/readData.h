@@ -15,7 +15,9 @@ extern "C" {
 
 	/* 初始化lineInfo */
 	lineInfo* Init_lineInfo();
-	/* 根据fp指向的文件建立结点信息的哈希表，读入线路信息 */
+	/* 函数功能：根据fp指向的文件建立结点信息的哈希表，读入信息 */
+	/* 入口参数：文件指针fp，哈希表指针的指针stations，线路辅助结构指针lineDetail */
+	/* 出口参数：读取状态。如果读取正常则返回0，否则返回-1 */
 	Status read_Data(FILE* fp, hash_struct** stations, lineInfo* lineDetail);
 #ifdef __cplusplus
 }

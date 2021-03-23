@@ -58,6 +58,7 @@ typedef struct lhControl
 } lhControl;
 lhControl hc;
 lhControl* hControl = &hc;
+
 void FontAClass(HWND* hwnd, HFONT hFont)
 {
 	int i = 0;
@@ -79,17 +80,14 @@ void AdjustRC(HWND hwnd, int left, int top, int right, int bottom)
 	// Set the rectangle
 	SendMessage(hwnd, EM_SETRECT, 0, (LPARAM)&rc);
 }
-void append_edit(HWND hwnd, char* s)
-{
-	SendMessage(hwnd, EM_SETSEL, -2, -1);
-	SendMessage(hwnd, EM_REPLACESEL, 1, (LPARAM)s);
-}
+
 void strcat1(char* s1, char* s2)
 {
 	strcat_s(_strrev(s1), 100, _strrev(s2));
 	_strrev(s2);
 	_strrev(s1);
 }
+
 int LocateLineSta(GraphAdjList* G, int line, char* str)
 {
 	for (int i = 1;i <= G->lineDetail[line].lineCount;i++)
@@ -101,6 +99,7 @@ int LocateLineSta(GraphAdjList* G, int line, char* str)
 	}
 	return -1;
 }
+
 void tips_station(HWND hwnd, char* str)
 {
 	SendMessage(hwnd, EM_SETSEL, -2, -1);
@@ -123,6 +122,7 @@ void tips_station(HWND hwnd, char* str)
 	SendMessage(hwnd, EM_REPLACESEL, 1, (LPARAM)";\r\n");
 	SendMessage(hwnd, EM_SETSEL, 0, 0);
 }
+
 int* tips_sta_inline(HWND hwnd, int line, int sta, int special)
 {
 	SendMessage(hwnd, EM_SETSEL, -2, -1);
@@ -244,6 +244,7 @@ void tips_input(HWND hwnd, int order)
 		tips_stations(hwnd, stations, 3);
 	}
 }
+
 void tips_line(HWND hwnd, int line, int which)
 {
 	SendMessage(hwnd, EM_SETSEL, -2, -1);
@@ -260,6 +261,7 @@ void tips_line(HWND hwnd, int line, int which)
 	}
 	SendMessage(hwnd, EM_SCROLLCARET, 1, 2);
 }
+
 void tips_table(HWND hwnd, Time_2 time)
 {
 	SendMessage(hwnd, EM_SETSEL, -2, -1);
@@ -303,6 +305,7 @@ void tips_table(HWND hwnd, Time_2 time)
 		time_add(&out, 3);
 	}
 }
+
 void Show_Path(HWND hwnd, GraphAdjList* G, PathInfo** P, int countt)
 {
 	SendMessage(hwnd, EM_SETSEL, -2, -1);
@@ -376,6 +379,7 @@ void Show_Path(HWND hwnd, GraphAdjList* G, PathInfo** P, int countt)
 	}
 	SendMessage(hwnd, EM_SETSEL, 0, 0);
 }
+
 void tips_output(HWND hwnd, int when_up, char* times)
 {
 	SendMessage(hwnd, EM_SETSEL, -2, -1);
@@ -396,6 +400,7 @@ void tips_output(HWND hwnd, int when_up, char* times)
 	//SendMessage(hwnd, EM_REPLACESEL, 1, (LPARAM)"\r\n");
 	SendMessage(hwnd, EM_SCROLLCARET, 1, 2);
 }
+
 void AddControls(HWND hwnd, lhControl* hControl)
 {
 	/*记录Dialog控件句柄并分组存放，以便之后统一字体*/
@@ -487,6 +492,7 @@ void AddControls(HWND hwnd, lhControl* hControl)
 	tips_table(GetDlgItem(hwnd, ID_TEXTI), time);
 	tips_line(GetDlgItem(hwnd, ID_TEXTI), 0, 0);
 }
+
 int main_path()
 {
 	FILE* fp;
@@ -506,6 +512,7 @@ int main_path()
 	}
 	return 0;
 }
+
 void DeleteAClass(void* hwnd, int order)
 {
 	int i = 0;
@@ -534,7 +541,10 @@ void DeleteAClass(void* hwnd, int order)
 		break;
 	}
 }
-/*限制输入内容为合法内容*/
+
+/* 函数功能：限制输入内容为合法内容 */
+/* 入口参数：窗口句柄hWnd，控件ID：IResourceID ，限制内容szLimit，限制情况order */
+/* 出口参数：int型数据，比如当前站点的编号；对于不需要返回值或者返回值异常的情况，返回-1 */
 int EditControlLimit(HWND hWnd, int iResouceID, char* szLimit, int order)
 {
 	int iLength = SendMessage(GetDlgItem(hWnd, iResouceID), WM_GETTEXTLENGTH, 0, 0);//获得编辑框的长度
@@ -547,7 +557,6 @@ int EditControlLimit(HWND hWnd, int iResouceID, char* szLimit, int order)
 		{
 			int iPos = -1;	//记录非限定字符位置
 			SendMessage(GetDlgItem(hWnd, iResouceID), WM_GETTEXT, iLength + 1, (LPARAM)szContent);	//获得编辑框内容
-			//printf("编辑框长度：%d\n",iLength);
 			//判断缓冲区中是否包含非限定字符
 			for (int i = 0; i < iLength; i++)
 			{
@@ -566,9 +575,7 @@ int EditControlLimit(HWND hWnd, int iResouceID, char* szLimit, int order)
 				{
 					//将非限定字符后的所有字符，向前依次复制
 					for (int k = i; k <= iLength; k++)
-					{
 						szContent[k] = szContent[k + 1];
-					}
 					//重设编辑框内容以及光标位置
 					SendMessage(GetDlgItem(hWnd, iResouceID), WM_SETTEXT, 0, (LPARAM)szContent);
 					SendMessage(GetDlgItem(hWnd, iResouceID), CB_SETEDITSEL, 0, (LPARAM)(iPos | (iPos << 16))); /*选择编辑框中的内容，低16位代表选择的起始位置，高16位代表结束位置*/
@@ -585,7 +592,6 @@ int EditControlLimit(HWND hWnd, int iResouceID, char* szLimit, int order)
 		{
 			sprintf_s(szContent, "%s不能为空~", szLimit);
 			MessageBox(hWnd, szContent, "小贴士", MB_ICONWARNING | MB_OK);
-			//Toast(hWnd,szContent);
 		}
 		else
 		{
@@ -605,11 +611,14 @@ int EditControlLimit(HWND hWnd, int iResouceID, char* szLimit, int order)
 	return -1;
 }
 
-int EditControlRange(HWND hWnd, int iResouceID, char* szLimit, int mi, int ma)
+/* 函数功能：限制输入内容的范围，order为1时输出打断提示信息，否则不输出打断用户操作的提示 */
+/* 入口参数：窗口句柄hWnd，控件ID：IResourceID ，限制内容szLimit，限制最小值mi，限制最大值ma,输出情况 */
+/* 出口参数：int型数据，比如当前站点的编号；对于不需要返回值或者返回值异常的情况，返回-1 */
+int EditControlRange(HWND hWnd, int iResouceID, char* szLimit, int mi, int ma,int order)
 {
 	int iLength = SendMessage(GetDlgItem(hWnd, iResouceID), WM_GETTEXTLENGTH, 0, 0);//获得编辑框的长度
 	char szContent[20] = { 0 };	//分配缓冲区，存储编辑框内容
-	if (iLength == 0)
+	if (iLength == 0 && order == 1)
 	{
 		sprintf_s(szContent, "%s不能为空~", szLimit);
 		MessageBox(hWnd, szContent, "小贴士", MB_ICONWARNING | MB_OK);
@@ -619,19 +628,24 @@ int EditControlRange(HWND hWnd, int iResouceID, char* szLimit, int mi, int ma)
 		SendMessage(GetDlgItem(hWnd, iResouceID), WM_GETTEXT, iLength + 1, (LPARAM)szContent);	//获得编辑框内容
 		int temp = atoi(szContent);
 		if (temp >= mi && temp <= ma)
-		{
 			return temp;
-		}
 		else
 		{
-			sprintf_s(szContent, "%s格式不对喔~", szLimit);
-			MessageBox(hWnd, szContent, "小贴士", MB_ICONWARNING | MB_OK);
+			if (order == 1) 
+			{
+				sprintf_s(szContent, "%s格式不对喔~", szLimit);
+				MessageBox(hWnd, szContent, "小贴士", MB_ICONWARNING | MB_OK);
+			}
 			return -1;
 		}
 	}
 	return -1;
 }
 
+/* 函数功能：检查输入。如果输入没有问题，则将用户输入填入到程序中，并计算用户输入对应的路径； */
+/* 如果输入有问题，则弹出具体问题的提示框，并终止检查行为； */
+/* 入口参数：窗口句柄hwnd */
+/* 出口参数：检查结果。如果结果为-1则说明输入异常，为0则说明输入正常。 */
 int Checkinput(HWND hwnd)
 {
 	if (!howInput)
@@ -688,38 +702,39 @@ int Checkinput(HWND hwnd)
 				return -1;
 			}
 			GetWindowText(GetDlgItem(hwnd, ID_EDITH), hTime, 2);
-			time.hour = EditControlRange(hwnd, ID_EDITH, (char*)"小时", 6, 22);
+			time.hour = EditControlRange(hwnd, ID_EDITH, (char*)"小时", 6, 22, 1);
 			if (time.hour != -1)
 			{
 				GetWindowText(hControl->hComBox[2], mTime, 2);
-				time.minute = (float)EditControlRange(hwnd, ID_EDITM, (char*)"分钟", 0, 59);
+				time.minute = (float)EditControlRange(hwnd, ID_EDITM, (char*)"分钟", 0, 59, 1);
 				if (time.minute != -1)
 				{
 					GetWindowText(hControl->hComBox[9], cMax, 2);
-					crowded_Max = EditControlRange(hwnd, IDC_COMBO2, (char*)"最大拥挤程度", 0, 99);
+					crowded_Max = EditControlRange(hwnd, IDC_COMBO2, (char*)"最大拥挤程度", 0, 99, 1);
 					if (crowded_Max != -1)
 					{
 						GetWindowText(hControl->hComBox[4], transferTimes, 2);
 						countt = get_All(G, P, ivex, jvex, time, int(transferTimes[0] - '0'), crowded_Max);
 						when_up = (int)TimeTable(&time);
+						return 0;
 					}
 				}
-				return 0;
+				
 			}
-			//Show_Path(G,P);
 		}
 	}
 	return -1;
 }
+
 void ShowResult(HWND OutputEdit, int order)
 {
 	/*0.综合推荐；1.时间短；2.票价低；3.拥挤少*/
 	int number = 0;
+	SetWindowText(OutputEdit, "");
 	switch (order)
 	{
 	case 0:
 	{
-		SetWindowText(OutputEdit, "");
 		SendMessage(OutputEdit, EM_REPLACESEL, 1, (LPARAM)"综合评估推荐路线：\r\n");
 		tips_output(OutputEdit, when_up, transferTimes);
 		number = Path_Sort_Weight(P, countt);
@@ -727,7 +742,6 @@ void ShowResult(HWND OutputEdit, int order)
 	}
 	case 1:
 	{
-		SetWindowText(OutputEdit, "");
 		SendMessage(OutputEdit, EM_REPLACESEL, 1, (LPARAM)"时间短推荐路线：\r\n");
 		tips_output(OutputEdit, when_up, transferTimes);
 		number = Path_Sort_Time(P, countt);
@@ -735,7 +749,6 @@ void ShowResult(HWND OutputEdit, int order)
 	}
 	case 2:
 	{
-		SetWindowText(OutputEdit, "");
 		SendMessage(OutputEdit, EM_REPLACESEL, 1, (LPARAM)"票价低推荐路线：\r\n");
 		tips_output(OutputEdit, when_up, transferTimes);
 		number = Path_Sort_Money(P, countt);
@@ -743,7 +756,6 @@ void ShowResult(HWND OutputEdit, int order)
 	}
 	case 3:
 	{
-		SetWindowText(OutputEdit, "");
 		SendMessage(OutputEdit, EM_REPLACESEL, 1, (LPARAM)"拥挤少推荐路线：\r\n");
 		tips_output(OutputEdit, when_up, transferTimes);
 		number = Path_Sort_Crowded(P, countt);
@@ -753,6 +765,7 @@ void ShowResult(HWND OutputEdit, int order)
 	Show_Path(OutputEdit, G, P, number);
 	SendMessage(OutputEdit, EM_SCROLLCARET, 1, 2);
 }
+
 void changeclick(HWND hWnd, int who, int lineIndex, int sta)
 {
 	free(transferPlan[who]);

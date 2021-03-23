@@ -111,9 +111,9 @@ int time_valid(Time_2 time)
 	return time_cmp(a[0], a[1], time);
 }
 
-/*函数功能：读取指定线路的指定时间点对应的拥挤百分数
- *入口参数：图G，其中存储了线路的拥挤百分数；线路序号lineIndex；时间点time
- *出口参数：整型的拥挤百分数；若输入出错，返回-1*/
+/* 函数功能：读取指定线路的指定时间点对应的拥挤百分数
+ * 入口参数：图G，其中存储了线路的拥挤百分数；线路序号lineIndex；时间点time
+ * 出口参数：整型的拥挤百分数；若输入出错，返回-1 */
 int time_crowded(GraphAdjList* G, int lineIndex, Time_2 time)
 {
 	for (int i = 0;i < timepart;i++)
@@ -131,8 +131,7 @@ int time_crowded(GraphAdjList* G, int lineIndex, Time_2 time)
  *出口参数：浮点型的拥挤因子；注：若拥挤百分数不为0~100，视为异常情况，返回-1*/
 float time_k(int crow, Time_2 time)
 {
-	Time_2 a[2];
-	if (crow >= 0 || crow <= 20)
+	if (crow >= 0 && crow <= 20)
 		return (float)k_relax;
 	else if (crow <= 70)
 		return (float)(k_crowded - k_relax) / 50 * (crow - 20) + k_relax;
@@ -158,32 +157,36 @@ void time_add(Time_2* time, float add)
 	}
 }
 
-//path是数字数组，以-1结尾
+/* 函数功能：path是数字数组，以-1结尾
+ * 入口参数：图G，路径P，发车时间time，最大拥挤程度cm
+ * 出口参数：如果路径合理，则返回0，如果路径不合理，则返回-1 */
 Status Cal_TimeAll(GraphAdjList* G, PathInfo* P, Time_2 time, int cm)
 {
-	int i = 0;                    /*循环参数*/
+	int i = 0;                    /* 循环变量 */
 	for (;P->edge[i];i++)
 	{
+		/* 获取当前边的拥挤度 */
 		int crow = time_crowded(G, P->edge[i]->lineIndex, time);
+		/* 当拥挤度大于限定值时，返回不合理标识-1 */
 		if (crow > cm)return -1;
-		float w = Time_Go * (time_k(crow, time));
-		P->time += w;
+		/* 利用拥挤度、默认行车时间，计算路径参数 */
+		P->time += Time_Go * (time_k(crow, time));
 		P->true_time += Time_Go;
 		P->crowded += crow;
 		time_add(&time, Time_Go);
+		/* 考虑停车后是否换乘 */
 		if (P->edge[i + 1])
 		{
 			if (P->edge[i]->lineIndex == P->edge[i + 1]->lineIndex)
-			{
-				int crow = time_crowded(G, P->edge[i + 1]->lineIndex, time);
+			{	/* 若没有换乘，类似行车计算，计算停车对应的路径参数 */
+				crow = time_crowded(G, P->edge[i + 1]->lineIndex, time);
 				if (crow > cm)return -1;
-				w = Time_Stop * (time_k(crow, time));
-				P->time += w;
+				P->time += Time_Stop * (time_k(crow, time));
 				P->true_time += Time_Stop;
 				time_add(&time, Time_Stop);
 			}
 			else
-			{
+			{	/* 若需要换乘，加上换乘步行时间和等车时间 */
 				P->time += Time_Walk;
 				P->true_time += Time_Walk;
 				time_add(&time, Time_Walk);
@@ -195,7 +198,9 @@ Status Cal_TimeAll(GraphAdjList* G, PathInfo* P, Time_2 time, int cm)
 			}
 		}
 	}
+	/* 计算平均拥挤度 */
 	P->crowded = P->crowded * 1.0 / i;
+	/* 判断到达时间是否合理 */
 	if (time_valid(time))
 		return 0;
 	else return -1;
@@ -235,7 +240,7 @@ void pathdfs(GraphAdjList* G, PathInfo** P, int i, int j, Time_2 time, int chang
 		EdgeNode* m = P[count]->edge[top - 2]->next;
 		while (m && m->adjvex != P[count]->path[top - 1])	/* 寻找是否有重复边 */
 			m = m->next;
-		if (m)/* 如果有重复边，则判断走该重复边是否能让当前正在查找的路径不换乘 */
+		if (m)/* 如果有重复边，则判断走重复边是否能让当前正在查找的路径不换乘 */
 			if (top > 2 && P[count]->edge[top - 3]->lineIndex == m->lineIndex)
 				/* 如果能，则选择走这条重复的边 */
 				P[count]->edge[top - 2] = m;
@@ -288,7 +293,7 @@ void pathdfs(GraphAdjList* G, PathInfo** P, int i, int j, Time_2 time, int chang
 				for (int s = 0; s < top && P[count - 1]->path[s] != j; s++)
 				{
 					P[count]->path[s] = P[count - 1]->path[s];
-					if (P[count - 1]->edge[k])
+					if (P[count - 1]->edge[s])
 						P[count]->edge[s] = P[count - 1]->edge[s];
 				}
 				P[count]->transfer = P[count - 1]->transfer;
@@ -388,22 +393,11 @@ int Path_Sort_Crowded(PathInfo* P[], int c) {
 }
 int get_All(GraphAdjList* G, PathInfo* P[], int i, int j, Time_2 time, int c, int cm) {
 	Init_TimeDepart(time_depart);
-	P[count] = Init_Path();
+	P[0] = Init_Path();
 	pathdfs(G, P, i, j, time, c, cm);
 	int l = count;
 	if (P[count])free(P[count]);
 	P[count] = 0;
 	count = 0;
 	return l;
-	/*Path_Sort_Time(P, count);
-	for (l = 0;l < count;l++)
-	{
-		if (l >= 3)
-		{
-			Free_Path(&P[l]);
-		}
-	}
-	count = 0;
-	if (l < 3)return l;
-	else return 3;*/
 }

@@ -19,9 +19,7 @@ int LocateVex(GraphAdjList* G, VertexType Vex)
 	hash_struct* s;
 	s = find_station(G->stations, Vex);
 	if (s)
-	{
 		return s->data.index;
-	}
 	return -1;
 }
 
@@ -82,7 +80,7 @@ Status CreateALGraph(GraphAdjList* G, FILE* fp)
 		for (int j = 1; j < G->lineDetail[i].lineCount; j++)
 		{
 			if (InsertEdge(G, LocateVex(G, G->lineDetail[i].lineStations[j]), LocateVex(G, G->lineDetail[i].lineStations[j + 1]), G->lineDetail[i].lineAverage, i))
-				return 1;										/* Èô²åÈëÊ§°Ü£¬·µ»Ø1 */
+				return -1;										/* Èô²åÈëÊ§°Ü£¬·µ»Ø-1 */
 			G->numEdges++;
 		}
 	}
